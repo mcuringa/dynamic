@@ -5,9 +5,26 @@ from random import choice
 from django.http import HttpResponse
 
 def index(request):
-    """This is the default/home page"""
+    """This is the default/home page, for now it is just a string written
+    right in the view method."""
     
-    return HttpResponse("Hello, world. This is a dynamic view.")
+    html = """<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>The Magic Eightball</title>
+        <meta charset="utf-8" />
+    </head>
+    <body>
+        <h1>Dynamic Web Programming</h1>
+        <h2>Examples</h2>
+        <ul>
+            <li><a href="/eightball" title="go to magic eightball">Magic Eight Ball</a></li>
+        </ul>
+    </body>
+</html>"""
+
+    
+    return HttpResponse(html)
 
 def question(request):
     """Show the question form for the magic eightball"""
