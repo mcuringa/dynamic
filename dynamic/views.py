@@ -1,4 +1,5 @@
 from django.shortcuts import render
+
 from random import choice
 
 
@@ -33,7 +34,7 @@ def question(request):
 
 
 
-def magic(request,question=""):
+def magic(request):
     """Ask the question and show the mystical response"""
     
     #read the POST parameter, "question" from our form
