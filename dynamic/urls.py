@@ -7,10 +7,12 @@ urlpatterns = patterns('',
     # http://127.0.0.1:8000/
     url(r'^$', views.index, name='index'),
     
-    # http://127.0.0.1:8000/eightball
-    url(r'^eightball$', views.question, name='question'),
-    # http://127.0.0.1:8000/magic
-    url(r'^magic$', views.magic, name='magic'),
+    url(r'^new_app$', views.app_form),
+    url(r'^save_app$', views.save_app),
+    url(r'^app/(.*)[/]$', views.detail),
+    url(r'^app/(.*?)/del[/]$', views.delete),
+    
+    
     
     
 )

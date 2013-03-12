@@ -31,14 +31,22 @@ label
 </head>
 
 <body>
+<header>
+<h1>Apps4Ed Database</h1>
 
-<h1>Add a new app</h1>
-<section id="app-form">
+<nav id="main-nav">
+<a href="/">app list</a> | <a href="/new_app">add an app</a>
+</nav>
 
-<form action="/save_app" method="post">
-    {{ app.as_p }}
-    <input type="submit" name="save" value="save" />
-</form>
+</header>
+<section id="app-list">
+<ul>
+
+{% for app in app_list %}
+    <li><a href="/app/{{app.slug}}">{{app.title}}</a> <a href="/app/{{app.slug}}/del" title="delete this app">x</a></li>
+{% endfor %}
+
+</ul>
 
 </section>
 

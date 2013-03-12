@@ -1,77 +1,51 @@
 from django.shortcuts import render
+from dynamic.models import *
 
-from random import choice
 
 
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 def index(request):
     """This is the default/home page, for now it is just a string written
     right in the view method."""
+
+
+    apps = App.objects.all()
     
-    html = """<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <title>The Magic Eightball</title>
-        <meta charset="utf-8" />
-    </head>
-    <body>
-        <h1>Dynamic Web Programming</h1>
-        <h2>Examples</h2>
-        <ul>
-            <li><a href="/eightball" title="go to magic eightball">Magic Eight Ball</a></li>
-        </ul>
-    </body>
-</html>"""
-
+    context = {"app_list":apps}
     
-    return HttpResponse(html)
+    return render(request, 'home.html', context)
 
-def question(request):
-    """Show the question form for the magic eightball"""
-   
-    return render(request, 'question.html')
+def detail(request,slug):
 
+    app = App.objects.get(slug=slug)
+    context = {"app": app }
 
-
-def magic(request):
-    """Ask the question and show the mystical response"""
+    return render(request, 'detail.html', context)
     
-    #read the POST parameter, "question" from our form
-    question = request.REQUEST["question"]
-
-    #choose a random response
-    answer = random_response()
-
-    #create a dictionary with that data our template needs
-    context = {"question": question, "answer": answer }
-
-    #"render the template, "magic.html", with our context
-    return render(request, 'magic.html', context)
+def delete(request,slug):
+    app = App.objects.get(slug=slug)
+    app.delete()
+    return HttpResponseRedirect('/?msg=app-deleted')
 
 
-def random_response():
-    """A helper method for magic() which chooses one of the random responses"""
+def app_form(request):
     
-    responses = ["It is certain",
-    "It is decidedly so",
-    "Without a doubt",
-    "Yes – definitely",
-    "You may rely on it",
-    "As I see it, yes",
-    "Most likely",
-    "Outlook good",
-    "Yes",
-    "Signs point to yes",
-    "Reply hazy, try again",
-    "Ask again later",
-    "Better not tell you now",
-    "Cannot predict now",
-    "Concentrate and ask again",
-    "Don't count on it",
-    "My reply is no",
-    "My sources say no",
-    "Outlook not so good",
-    "Very doubtful"]
+    app = AppForm()
+
+    context = {"app": app }
+
+    return render(request, 'app_form.html', context)
+
+
+
+def save_app(request):
+
+    form = AppForm(request.POST) # A form bound to the POST data
+
+    form.save()
     
-    return choice(responses)
+    return HttpResponseRedirect('/')
+
+
+
