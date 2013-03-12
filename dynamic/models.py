@@ -13,12 +13,18 @@ class App(models.Model):
     rating = models.DecimalField(max_digits=4, decimal_places=2, null=True)
     num_ratings = models.IntegerField(null=True)
 
-    def save(self,*args, **kwargs):
-        """Set the slug, from the title, when it's saved the first time"""
-        if self.slug == None or len(self.slug) == 0:
-            self.slug = slugify(self.title)
-        super(App, self).save()
+    def clean(self):
+        """Prepare the data to be saved."""
 
+        self.slug = strip_and_test(self.slug)
+        if self.slug == None:
+            self.slug = slugify(self.title)
+
+        self.url = strip_and_test(self.url)
+        if self.url is not None and not self.url.startswith("http"):
+            self.url = "http://" + self.url
+
+        
 
     def __unicode__(self):
         return self.title
@@ -31,6 +37,16 @@ class App(models.Model):
         else:
             print("Warn: rating ({}) out of range".format(new_rating))
 
+
+def strip_and_test(s):
+    """Returns None for empty strings, or stripped string"""
+    if s == None:
+        return None
+    
+    s = s.strip()
+    if len(s) == 0:
+        return None
+    return s
 
 class AppForm(ModelForm):
     class Meta:

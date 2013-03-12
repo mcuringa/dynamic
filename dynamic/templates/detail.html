@@ -26,21 +26,38 @@ label
 }
 
 
+dt
+{
+    float:left; 
+    display: inline;
+    font-weight: bold;
+    margin-right: .5em;
+}
+
+
 </style>
 
 </head>
 
 <body>
 <header>
-<h1>Apps4Ed Database</h1>
-
+<h1><a href="/" title="see the list of apps">Apps4Ed Database</a></h1>
 <nav id="main-nav">
-<a href="/">app list</a> | <a href="/new_app">add an app</a>
+    <a href="/add_app">add an app</a>
 </nav>
-
 </header>
 
-{{app.title}}
+<h2>{{app.title}}</h2>
+[<a href="/app/{{app.slug}}/edit">edit</a>] [<a href="/app/{{app.slug}}/del">delete</a>]
+<dl>
+    <dt>Price:</dt>
+    <dd>{{app.cost}}</dd>
+    <dt>Developer:</dt>
+    <dd>{{app.developer}}</dd>
+    <dt>Site:</dt>
+    <dd><a href="{{app.url}}">{{app.url}}</a></dd>
+
+</dl>
 
 </body>
 
