@@ -25,7 +25,23 @@ label
     padding-right: .5em;
 }
 
+table
+{
+  border-collapse:collapse;
+  min-width: 800px;
+  line-height: 1.5em;
+}
 
+th
+{
+  background: black;
+  color: white;
+  font-weight: bold;
+}
+.center
+{
+    text-align: center;
+}
 </style>
 
 </head>
@@ -38,13 +54,29 @@ label
 </nav>
 </header>
 <section id="app-list">
-<ul>
+<table>
+
+<tr>
+    <th>App name</th>
+    <th>Rating</th>
+    <th>Rate</th>
+    <th>Delete</th>
+</tr>
 
 {% for app in app_list %}
-    <li><a href="/app/{{app.slug}}">{{app.title}}</a> <a href="/app/{{app.slug}}/del" title="delete this app">x</a></li>
+    <tr>
+        <td><a href="/app/{{app.id}}" title="see app details">{{app.title}}</a></td>
+        <td>{{app.rating}} ({{app.num_ratings}} total)</td>
+        <td class="center">
+        {% for i in "12345" %}
+            [<a href="/rate/{{app.id}}/{{ i }}">{{i}}</a>] 
+        {% endfor %}
+        </td>
+        <td class="center"><a href="/app/{{app.id}}/del" title="delete this app">x</a></td>
+    </tr>
 {% endfor %}
 
-</ul>
+</table>
 
 </section>
 

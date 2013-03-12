@@ -8,9 +8,9 @@ urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
 
     url(r'^add_app$', views.app_form),
-    url(r'^app/(?P<slug>.+?)/edit[/]$', views.app_form),
+    url(r'^app/(?P<pk>[0-9]?)/edit[/]$', views.app_form),
     url(r'^save_app$', views.save_app),
-    url(r'^app/(.+?)/del[/]$', views.del_app),
-    url(r'^app/(.+?)[/]$', views.app_detail),
-
+    url(r'^app/([0-9]?)/del[/]$', views.del_app),
+    url(r'^app/([0-9]?)[/]$', views.app_detail),
+    url(r'^rate/([0-9]?)/([0-9]?)[/]$', views.rate_app),
 )

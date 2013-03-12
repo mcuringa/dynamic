@@ -11,10 +11,6 @@ body, section, p, input, label, h1, h2, h3, h4
     font-family: Ubuntu, Futura, sans-serif;
 }
 
-body
-{
-}
-
 /* add some styles to our form */
 label
 { 
@@ -25,17 +21,23 @@ label
     padding-right: .5em;
 }
 
-
 </style>
 
 </head>
 
 <body>
 
-<h1>Add a new app</h1>
+<header>
+<h1><a href="/" title="see the list of apps">Apps4Ed Database</a></h1>
+<nav id="main-nav">
+    <a href="/add_app">add an app</a>
+</nav>
+</header>
+
 <section id="app-form">
 
 <form action="/save_app" method="post">
+    <input type="hidden" name="id" value="{{pk}}" />
     {{ app.as_p }}
     <input type="submit" name="save" value="save" />
 </form>
