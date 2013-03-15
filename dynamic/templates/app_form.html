@@ -1,38 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<title>New Application</title>
+{% extends "base.html" %}
 
-<meta charset="utf-8" />
-
-<style type="text/css">
-body, section, p, input, label, h1, h2, h3, h4
-{
-    font-family: Ubuntu, Futura, sans-serif;
-}
-
-/* add some styles to our form */
-label
-{ 
-    display: block; 
-    text-align: right; 
-    float:left; 
-    width: 130px;
-    padding-right: .5em;
-}
-
-</style>
-
-</head>
-
-<body>
-
-<header>
-<h1><a href="/" title="see the list of apps">Apps4Ed Database</a></h1>
-<nav id="main-nav">
-    <a href="/add_app">add an app</a>
-</nav>
-</header>
+{% block body %}
 
 <section id="app-form">
 
@@ -44,6 +12,4 @@ label
 
 </section>
 
-</body>
-
-</html>
+{% endblock %}

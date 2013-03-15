@@ -11,6 +11,7 @@ class App(models.Model):
     cost = models.DecimalField(max_digits=8,decimal_places=2, null=True, blank=True)
     rating = models.DecimalField(max_digits=4, decimal_places=2, null=True)
     num_ratings = models.IntegerField(null=True)
+    #~ screenshot = models.FileField(
 
     def __unicode__(self):
         return self.title
