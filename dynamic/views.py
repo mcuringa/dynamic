@@ -1,9 +1,48 @@
 from django.shortcuts import render
 from dynamic.models import *
 
+from django.contrib.auth import authenticate, login
 
+
+from django.contrib.auth.forms import UserCreationForm
 
 from django.http import HttpResponse, HttpResponseRedirect
+
+
+def register(request):
+    
+    if request.method == 'POST':
+        form = AppForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/?success')
+        else:
+            for e in form.errors:
+                print(e)
+                return HttpResponseRedirect('/?fail')
+
+        
+    
+    form = UserCreationForm()
+    print(form)
+    context = {"form": form}
+    
+    return render(request, 'register.html', context)
+
+def user_login(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        return HttpResponseRedirect('/')
+
+    return HttpResponseRedirect('/login-sorry')
+
+
+def login_error(request):
+    """Let ther user know that login failed."""
+
+    return render(request, 'login-sorry.html')
 
 def index(request):
     """This is the default/home page, it lists all of the
@@ -12,7 +51,7 @@ def index(request):
 
     apps = App.objects.all()
     
-    context = {"app_list":apps}
+    context = {"app_list": apps}
     
     return render(request, 'home.html', context)
 
@@ -30,6 +69,7 @@ def del_app(request, pk):
 
 
 def app_form(request, pk=0):
+    """Create a form to edit an existing app or create a new app"""
 
     if pk == 0:
         form = AppForm()
@@ -43,12 +83,12 @@ def app_form(request, pk=0):
 
 def save_app(request):
 
-    id = int(request.POST["id"])
-    if id == 0:
+    pk = int(request.POST["id"])
+    if pk == 0:
         # read the form POST data into our AppForm object
         form = AppForm(request.POST)
     else:
-        app = App.objects.get(pk=id)
+        app = App.objects.get(pk=pk)
         form = AppForm(request.POST, instance=app)
 
     app = form.save()
