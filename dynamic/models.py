@@ -2,6 +2,9 @@ from django.db import models
 from django.forms import ModelForm
 from django.template.defaultfilters import slugify
 
+from django.contrib.auth.models import User
+
+
 class App(models.Model):
     """An iPad App that can be rated"""
 
@@ -11,8 +14,9 @@ class App(models.Model):
     cost = models.DecimalField(max_digits=8,decimal_places=2, null=True, blank=True)
     rating = models.DecimalField(max_digits=4, decimal_places=2, null=True)
     num_ratings = models.IntegerField(null=True)
-    #~ screenshot = models.FileField(
-
+    created_by = models.ForeignKey(User, null=True)
+    modified_by = models.ForeignKey(User, null=True)
+    
     def __unicode__(self):
         return self.title
 
@@ -40,4 +44,4 @@ class AppForm(ModelForm):
     """A ModelForm for editing App Models"""
     class Meta:
         model = App
-        exclude = ["rating","num_ratings"]
+        exclude = ["rating","num_ratings", "created_by", "modified_by"]

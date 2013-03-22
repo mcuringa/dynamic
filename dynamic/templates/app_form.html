@@ -6,6 +6,8 @@
 
 <form action="/save_app" method="post">
     <input type="hidden" name="id" value="{{pk}}" />
+    <input type="creator" name="id" value="{{creatorId}}" />
+    <input type="modifier" name="id" value="{{modifierId}}" />
     {{ app.as_p }}
     <input type="submit" name="save" value="save" />
 </form>

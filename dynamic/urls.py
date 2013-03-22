@@ -13,8 +13,10 @@ urlpatterns = patterns('',
     url(r'^app/([0-9]?)[/]$', views.app_detail),
     url(r'^rate/([0-9]?)/([0-9]?)[/]$', views.rate_app),
     
-    url(r'^login$', views.rate_app),
-    url(r'^login-sorry$', views.rate_app),
+    
+    #--------------------------------------------- user login
+    url(r'^login$', views.user_login),
+    url(r'^login-sorry$', views.login_error),
     url(r'^register$', views.register),
 
 

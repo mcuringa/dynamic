@@ -81,6 +81,12 @@ dt
 <h1><a href="/" title="see the list of apps">Apps4Ed Database</a></h1>
 <nav id="main-nav">
     <a href="/add_app">add an app</a>
+    {% if user.is_authenticated %}
+        <a href="/logout" title="click to logout">{{ user.username }}</a>
+    {% else %}
+        <a href="/login">login</a>
+        <a href="/register">sign up</a>
+    {% endif %}
 </nav>
 </header>
 

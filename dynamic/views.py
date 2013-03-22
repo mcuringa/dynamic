@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from dynamic.models import *
 
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 
 from django.contrib.auth.forms import UserCreationForm
@@ -12,31 +12,36 @@ from django.http import HttpResponse, HttpResponseRedirect
 def register(request):
     
     if request.method == 'POST':
-        form = AppForm(request.POST)
+        form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/?success')
         else:
-            for e in form.errors:
-                print(e)
-                return HttpResponseRedirect('/?fail')
-
-        
+            return HttpResponseRedirect('/?fail')      
     
     form = UserCreationForm()
-    print(form)
     context = {"form": form}
     
     return render(request, 'register.html', context)
 
 def user_login(request):
-    username = request.POST['username']
-    password = request.POST['password']
-    user = authenticate(username=username, password=password)
-    if user is not None:
-        return HttpResponseRedirect('/')
+    
+    if request.method == 'POST':
 
-    return HttpResponseRedirect('/login-sorry')
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return HttpResponseRedirect('/?msg=logged-in')
+
+        return HttpResponseRedirect('/login-sorry')
+
+    return render(request, 'login.html')
+
+def user_logout(request):
+    logout(request)
+    return HttpResponseRedirect('/?msg=you-are-now-logged-out')
 
 
 def login_error(request):
@@ -47,7 +52,6 @@ def login_error(request):
 def index(request):
     """This is the default/home page, it lists all of the
     apps in our database"""
-
 
     apps = App.objects.all()
     
