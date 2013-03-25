@@ -14,8 +14,8 @@ class App(models.Model):
     cost = models.DecimalField(max_digits=8,decimal_places=2, null=True, blank=True)
     rating = models.DecimalField(max_digits=4, decimal_places=2, null=True)
     num_ratings = models.IntegerField(null=True)
-    created_by = models.ForeignKey(User, null=True)
-    modified_by = models.ForeignKey(User, null=True)
+    created_by = models.ForeignKey(User,  related_name='app_creators')
+    modified_by = models.ForeignKey(User,  related_name='app_modifiers')
     
     def __unicode__(self):
         return self.title
@@ -45,3 +45,13 @@ class AppForm(ModelForm):
     class Meta:
         model = App
         exclude = ["rating","num_ratings", "created_by", "modified_by"]
+
+
+class Review(models.Model):
+    """A review and a rating for an App"""
+    reviewer = models.CharField(max_length=500)
+    review = models.TextField()
+    rating = models.DecimalField(max_digits=4, decimal_places=2, null=True)
+    reviewer = models.ForeignKey(User, null=False)
+
+

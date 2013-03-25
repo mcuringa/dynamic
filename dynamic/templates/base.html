@@ -72,25 +72,40 @@ dt
     margin-right: .5em;
 }
 
+#messages
+{
+    font-size: 90%;
+    background-color: lightyellow;
+}
+
 </style>
 
 </head>
 
 <body>
 <header>
-<h1><a href="/" title="see the list of apps">Apps4Ed Database</a></h1>
-<nav id="main-nav">
-    <a href="/add_app">add an app</a>
-    {% if user.is_authenticated %}
-        <a href="/logout" title="click to logout">{{ user.username }}</a>
-    {% else %}
-        <a href="/login">login</a>
-        <a href="/register">sign up</a>
-    {% endif %}
-</nav>
+    <h1><a href="/" title="see the list of apps">Apps4Ed Database</a></h1>
+    <nav id="main-nav">
+        <a href="/add_app">add an app</a>
+        {% if user.is_authenticated %}
+            <a href="/logout" title="click to logout">{{ user.username }}</a>
+        {% else %}
+            <a href="/login">login</a>
+            <a href="/register">sign up</a>
+        {% endif %}
+    </nav>
+
+{% if messages %}
+    <ul id="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
 </header>
 
-{% block body %}Page body here.{% endblock %}
+{% block body %}Every child template should put something here...{% endblock %}
 
 </body>
 

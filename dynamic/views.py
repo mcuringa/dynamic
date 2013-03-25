@@ -3,6 +3,7 @@ from dynamic.models import *
 
 from django.contrib.auth import authenticate, login, logout
 
+from django.contrib import messages
 
 from django.contrib.auth.forms import UserCreationForm
 
@@ -11,17 +12,20 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 def register(request):
     
+    form = UserCreationForm()
+
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/?success')
+            messages.add_message(request, messages.INFO, 'Your account is created, welcome to Apps4Ed.')
+
+            return HttpResponseRedirect('/')
         else:
-            return HttpResponseRedirect('/?fail')      
+            messages.add_message(request, messages.INFO, 'There was a problem creating your account.')
     
-    form = UserCreationForm()
     context = {"form": form}
-    
+
     return render(request, 'register.html', context)
 
 def user_login(request):
@@ -33,7 +37,8 @@ def user_login(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
-            return HttpResponseRedirect('/?msg=logged-in')
+            messages.add_message(request, messages.INFO, 'You are successfully logged in.')
+            return HttpResponseRedirect('/')
 
         return HttpResponseRedirect('/login-sorry')
 
@@ -41,11 +46,12 @@ def user_login(request):
 
 def user_logout(request):
     logout(request)
-    return HttpResponseRedirect('/?msg=you-are-now-logged-out')
+    messages.add_message(request, messages.INFO, 'You are now logged out.')
+    return HttpResponseRedirect('/')
 
 
 def login_error(request):
-    """Let ther user know that login failed."""
+    """Let the user know that login failed."""
 
     return render(request, 'login-sorry.html')
 
@@ -67,9 +73,11 @@ def app_detail(request,pk):
     return render(request, 'detail.html', context)
     
 def del_app(request, pk):
-    app = App.objects.get(pk=pk)
+    """Delete an app from the database."""
+    
+    messages.add_message(request, messages.INFO, "'{}' deleted.".format(app.title))
     app.delete()
-    return HttpResponseRedirect('/?msg=app-deleted')
+    return HttpResponseRedirect('/')
 
 
 def app_form(request, pk=0):
