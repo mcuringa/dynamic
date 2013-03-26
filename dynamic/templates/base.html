@@ -12,6 +12,14 @@ body, section, p, input, label, h1, h2, h3, h4
     font-family: Ubuntu, Futura, sans-serif;
 }
 
+header
+{
+    background-color: #d9d7c5;
+    border-bottom: 4px solid black;
+    padding-bottom: 1em;
+    text-align: center;
+}
+
 h1 a
 {
     color: black;
@@ -74,8 +82,21 @@ dt
 
 #messages
 {
+    margin: 1em 2em;
     font-size: 90%;
     background-color: lightyellow;
+    border: thin solid black;
+    text-align: left;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+#reviews li
+{
+    border-top: thin solid black;
+    padding: 1em;
+    margin: 1em 0;
+    list-style-type: none;
 }
 
 </style>
@@ -86,11 +107,13 @@ dt
 <header>
     <h1><a href="/" title="see the list of apps">Apps4Ed Database</a></h1>
     <nav id="main-nav">
-        <a href="/add_app">add an app</a>
+        
+        <a href="/">app list</a> |
+        <a href="/add_app">add an app</a> |
         {% if user.is_authenticated %}
-            <a href="/logout" title="click to logout">{{ user.username }}</a>
+            {{ user.username }} (<a href="/logout" title="click to logout">logout</a>)
         {% else %}
-            <a href="/login">login</a>
+            <a href="/login">login</a> |
             <a href="/register">sign up</a>
         {% endif %}
     </nav>

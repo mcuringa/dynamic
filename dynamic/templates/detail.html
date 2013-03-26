@@ -4,7 +4,8 @@
 
 
 <h2>{{app.title}}</h2>
-[<a href="/app/{{app.id}}/edit">edit</a>] [<a href="/app/{{app.id}}/del">delete</a>]
+[<a href="/app/{{app.id}}/edit">edit</a>] [<a href="/review/{{app.id}}">review</a>] [<a href="/app/{{app.id}}/del">delete</a>]
+<section id="app-details">
 <dl>
     <dt>Price:</dt>
     <dd>{{app.cost}}</dd>
@@ -12,6 +13,31 @@
     <dd>{{app.developer}}</dd>
     <dt>Site:</dt>
     <dd><a href="{{app.url}}">{{app.url}}</a></dd>
+    
+    <dt>Created by:</dt>
+    <dd>{{app.creator.username}}</dd>
 
+    
+    <dt>Modified by:</dt>
+    <dd>{{app.modifier.username}}</dd>
 </dl>
+</section>
+
+<section id="reviews">
+<h2>Reviews</h2>
+<h3>Avg: {{app.rating}} Total: {{app.num_ratings}}</h3>
+<ul>
+
+{% for review in reviews %}
+    <li>
+        <strong>Submitted by:</strong> {{review.reviewer.username}}<br />
+        <strong>Rated:</strong> {{review.rating}}<br />
+        <p>{{review.review}}</p>
+    </li>
+
+{% endfor %}
+
+</ul>
+
+</section>
 {% endblock %}

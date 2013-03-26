@@ -2,12 +2,13 @@
 
 {% block body %}
 
-<section id="app-form">
-This is the app form.
+<section id="review-form">
 
-<form action="/save_app" method="post">
+<form action="/save_review" method="post">
     <input type="hidden" name="id" value="{{pk}}" />
-    {{ app.as_p }}
+    <input type="hidden" name="app_id" value="{{app_id}}" />
+
+    {{ review.as_p }}
     <input type="submit" name="save" value="save" />
 </form>
 

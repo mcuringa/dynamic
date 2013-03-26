@@ -9,53 +9,7 @@ from django.contrib.auth.forms import UserCreationForm
 
 from django.http import HttpResponse, HttpResponseRedirect
 
-
-def register(request):
-    
-    form = UserCreationForm()
-
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.add_message(request, messages.INFO, 'Your account is created, welcome to Apps4Ed.')
-
-            return HttpResponseRedirect('/')
-        else:
-            messages.add_message(request, messages.INFO, 'There was a problem creating your account.')
-    
-    context = {"form": form}
-
-    return render(request, 'register.html', context)
-
-def user_login(request):
-    
-    if request.method == 'POST':
-
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            login(request, user)
-            messages.add_message(request, messages.INFO, 'You are successfully logged in.')
-            return HttpResponseRedirect('/')
-
-        return HttpResponseRedirect('/login-sorry')
-
-    return render(request, 'login.html')
-
-def user_logout(request):
-    logout(request)
-    messages.add_message(request, messages.INFO, 'You are now logged out.')
-    return HttpResponseRedirect('/')
-
-
-def login_error(request):
-    """Let the user know that login failed."""
-
-    return render(request, 'login-sorry.html')
-
-def index(request):
+def app_list(request):
     """This is the default/home page, it lists all of the
     apps in our database"""
 
@@ -68,13 +22,15 @@ def index(request):
 def app_detail(request,pk):
 
     app = App.objects.get(pk=pk)
-    context = {"app": app }
+    reviews = Review.objects.filter(app__id=pk)
+    context = {"app": app, "reviews": reviews }
 
     return render(request, 'detail.html', context)
     
 def del_app(request, pk):
     """Delete an app from the database."""
     
+    app = App.objects.get(pk=pk)    
     messages.add_message(request, messages.INFO, "'{}' deleted.".format(app.title))
     app.delete()
     return HttpResponseRedirect('/')
@@ -82,6 +38,13 @@ def del_app(request, pk):
 
 def app_form(request, pk=0):
     """Create a form to edit an existing app or create a new app"""
+
+    print("calling app_form()")
+
+    # if the user isn't signed in, send them to the login screen
+    if not request.user.is_authenticated():
+        messages.add_message(request, messages.INFO, "You mussed be logged in to add an App")
+        return HttpResponseRedirect('/login')
 
     if pk == 0:
         form = AppForm()
@@ -91,34 +54,38 @@ def app_form(request, pk=0):
 
     context = { "app": form, "pk": pk }
 
+    print(form)
+
     return render(request, 'app_form.html', context)
 
 def save_app(request):
 
     pk = int(request.POST["id"])
+    
+    # the current logged in user
+    user = request.user
+    
+    # if the user isn't signed in, send them to the login screen
+    if not user.is_authenticated():
+        messages.add_message(request, messages.INFO, "You mussed be logged in to add an App")
+
+        return HttpResponseRedirect('/login')
+    
+    # this is if we are creating a new App
     if pk == 0:
         # read the form POST data into our AppForm object
         form = AppForm(request.POST)
+        # set the creator (only once) to the current logged in user
+        form.instance.creator = user
+    
+    # this is if we are updating an existing app
     else:
         app = App.objects.get(pk=pk)
         form = AppForm(request.POST, instance=app)
 
+    form.instance.modifier = user
+    
     app = form.save()
 
     #send them to the detail view after saving
     return HttpResponseRedirect("/")
-
-def rate_app(request, pk, rating):
-    """Add a new rating for this app."""
-    
-    app = App.objects.get(pk=pk)
-    
-    # note all parameters from urls come in as strings, we 
-    # need to make our rating an int
-    app.rate(int(rating))
-    app.save()
-
-    #send them to the detail view after saving
-    return HttpResponseRedirect("/")
-
-

@@ -4,16 +4,18 @@
 <section id="login-form">
 
 <form action="/login" method="post">
-
-<label>username</label>
-<input type="text" name="username" />
-
-<label>password</label>
-<input type="password" name="password" />
+<p>
+    <label>username</label>
+    <input type="text" name="username" />
+</p>
+<p>
+    <label>password</label>
+    <input type="password" name="password" />
+</p>
 <input type="submit" name="login" value="login">
 
 </form>
-
+<h3>Not a member? <a href="/register">Click here to register</a></h3>
 
 </section>
 {% endblock %}
