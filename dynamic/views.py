@@ -2,19 +2,16 @@ from django.shortcuts import render
 from dynamic.models import *
 
 from django.contrib.auth import authenticate, login, logout
-
 from django.contrib import messages
-
 from django.contrib.auth.forms import UserCreationForm
-
 from django.http import HttpResponse, HttpResponseRedirect
+
 
 def app_list(request):
     """This is the default/home page, it lists all of the
     apps in our database"""
 
     apps = App.objects.all()
-    
     context = {"app_list": apps}
     
     return render(request, 'home.html', context)
@@ -27,19 +24,10 @@ def app_detail(request,pk):
 
     return render(request, 'detail.html', context)
     
-def del_app(request, pk):
-    """Delete an app from the database."""
-    
-    app = App.objects.get(pk=pk)    
-    messages.add_message(request, messages.INFO, "'{}' deleted.".format(app.title))
-    app.delete()
-    return HttpResponseRedirect('/')
-
-
 def app_form(request, pk=0):
     """Create a form to edit an existing app or create a new app"""
 
-    print("calling app_form()")
+    print("calling app_form() function in views")
 
     # if the user isn't signed in, send them to the login screen
     if not request.user.is_authenticated():
@@ -49,12 +37,11 @@ def app_form(request, pk=0):
     if pk == 0:
         form = AppForm()
     else:
+        print("editing an existing app with primary key",pk)
         app = App.objects.get(pk=pk)
         form = AppForm(instance=app)
 
     context = { "app": form, "pk": pk }
-
-    print(form)
 
     return render(request, 'app_form.html', context)
 
@@ -89,3 +76,11 @@ def save_app(request):
 
     #send them to the detail view after saving
     return HttpResponseRedirect("/")
+
+def del_app(request, pk):
+    """Delete an app from the database."""
+    
+    app = App.objects.get(pk=pk)    
+    messages.add_message(request, messages.INFO, "'{}' deleted.".format(app.title))
+    app.delete()
+    return HttpResponseRedirect('/')

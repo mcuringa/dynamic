@@ -5,12 +5,14 @@ from dynamic import views, review_views, user_views
 urlpatterns = patterns('',
 
     #--------------------------------------------- apps stuff
-    url(r'^$', views.app_list),
-    url(r'^add_app$', views.app_form), 
-    url(r'^app/(?P<pk>[0-9]?)/edit[/]$', views.app_form), 
-    url(r'^save_app$', views.save_app),
-    url(r'^app/([0-9]?)/del[/]$', views.del_app),
-    url(r'^app/([0-9]?)[/]$', views.app_detail),
+                                                               # Examples
+                                                               #------------------------------------
+    url(r'^$', views.app_list),                                # http://127.0.0.1:8000/
+    url(r'^add_app$', views.app_form),                         # http://127.0.0.1:8000/add_app
+    url(r'^app/([0-9]?)[/]$', views.app_detail),               # http://127.0.0.1:8000/app/12
+    url(r'^app/(?P<pk>[0-9]?)/edit[/]$', views.app_form),      # http://127.0.0.1:8000/app/12/edit
+    url(r'^app/([0-9]?)/del[/]$', views.del_app),              # http://127.0.0.1:8000/app/12/del
+    url(r'^save_app$', views.save_app),                        # http://127.0.0.1:8000/save_app
     
     #--------------------------------------------- ratings & reviews
     url(r'^rate/([0-9]?)/([0-9]?)[/]$', review_views.rate_app),
