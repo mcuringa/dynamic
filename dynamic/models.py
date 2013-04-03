@@ -27,32 +27,29 @@ class App(models.Model):
     developer = models.CharField(max_length=500, null=True, blank=True)
     url = models.CharField(max_length=500, null=True, blank=True)
     cost = models.DecimalField(max_digits=8,decimal_places=2, null=True, blank=True)
-    #~ rating = models.DecimalField(max_digits=4, decimal_places=2, null=True)
-    #~ num_ratings = models.IntegerField(null=True)
     creator = models.ForeignKey(User,  related_name='app_creators')
     modifier = models.ForeignKey(User,  related_name='app_modifiers')
 
-    def __str__(self):
-        return "{} (id:{})".format(self.title, self.id)    
-    
-    def __unicode__(self):
-        return self.title
-
-    def is_free(self):
-        """The app is free if the cost is zero"""
-        return cost == 0
-
-
     def num_ratings(self):
+        """The total number of times this App has been rated."""
+        
         return len(self.review_set.all())
 
     def rating(self):
+        """The average rating across all reviews."""
+        
         ratings = [r.rating for r in self.review_set.all()]
         if len(ratings) == 0:
             return 0
         
         return round(sum(ratings)/len(ratings),1)
         
+    def __str__(self):
+        return "{} (id:{})".format(self.title, self.id)    
+    
+    def __unicode__(self):
+        return self.title
+
     class Meta:
             ordering = ('title',)
 
@@ -60,7 +57,7 @@ class AppForm(ModelForm):
     """A ModelForm for editing App Models"""
     class Meta:
         model = App
-        exclude = ["rating","num_ratings", "creator", "modifier"]
+        exclude = ["creator", "modifier"]
 
 
 class Review(models.Model):
@@ -75,7 +72,6 @@ class Review(models.Model):
 
     def __str__(self):
         return "(user:{}), (app:{}), (rating:{}), '{}(id:{})'".format(self.reviewer.username, self.app.id, self.rating, self.review, self.id)    
-
 
 
 class ReviewForm(ModelForm):
