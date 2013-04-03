@@ -1,8 +1,23 @@
 from django.db import models
+from django import forms
 from django.forms import ModelForm
 from django.template.defaultfilters import slugify
 
 from django.contrib.auth.models import User
+
+
+class ContactForm(forms.forms):
+    """A contact message, which can be sent via email"""
+
+    #NOTE: this is a form without a model
+    # our fields are from the "forms" package, not "models"
+    # the difference is that we will not save this to the DB
+    subject = forms.CharField(max_length=500)
+    from_name = forms.CharField(max_length=500)
+    from_email = forms.EmailField(max_length=254)
+    message = forms.TextField()
+
+
 
 
 class App(models.Model):
