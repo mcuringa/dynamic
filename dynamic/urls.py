@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
 
-from dynamic import views, review_views, user_views
+from dynamic import views, review_views, user_views, contact_views
 
 urlpatterns = patterns('',
 
@@ -24,5 +24,8 @@ urlpatterns = patterns('',
     url(r'^logout$', user_views.user_logout),
     url(r'^login-sorry$', user_views.login_error),
     url(r'^register$', user_views.register),
+
+    #--------------------------------------------- user login
+    url(r'^contact$', contact_views.contact),
 
 )

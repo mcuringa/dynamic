@@ -6,7 +6,7 @@ from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 
 
-class ContactForm(forms.forms):
+class ContactForm(forms.Form):
     """A contact message, which can be sent via email"""
 
     #NOTE: this is a form without a model
@@ -15,11 +15,10 @@ class ContactForm(forms.forms):
     subject = forms.CharField(max_length=500)
     from_name = forms.CharField(max_length=500)
     from_email = forms.EmailField(max_length=254)
-    message = forms.TextField()
+    message = forms.CharField(max_length=1000)
+    phone = forms.CharField(max_length=100)
 
-
-
-
+        
 class App(models.Model):
     """An iPad App that can be rated"""
 
@@ -29,6 +28,7 @@ class App(models.Model):
     cost = models.DecimalField(max_digits=8,decimal_places=2, null=True, blank=True)
     creator = models.ForeignKey(User,  related_name='app_creators')
     modifier = models.ForeignKey(User,  related_name='app_modifiers')
+
 
     def num_ratings(self):
         """The total number of times this App has been rated."""

@@ -31,6 +31,7 @@ body
     background: white;
     max-width: 800px;
     margin: 0 auto;
+    padding-bottom: 45px;
 }
 
 /* add some styles to our form */
@@ -99,6 +100,21 @@ dt
     list-style-type: none;
 }
 
+footer
+{
+
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1em;
+    border-top: 1px solid black;
+    font-size: 90%;
+    font-weight: bold;
+    text-align: center;
+    height: 40px;
+}
+
 </style>
 
 </head>
@@ -130,6 +146,11 @@ dt
 
 {% block body %}Every child template should put something here...{% endblock %}
 
+
+<footer>
+Apps4Ed is a sample website developed for the <a href="http://education.adelphi.edu">Graduate Program in Educational Technology</a>
+at Adelphi University. For more information, <a href="/contact">contact us</a>.
+</footer>
 </body>
 
 </html>

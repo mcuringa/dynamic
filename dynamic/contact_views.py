@@ -20,10 +20,12 @@ def contact(request):
     if request.method == 'POST': # If the form has been submitted...
         form = ContactForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
+        
+            #~ print(dir(form))
             
             # add a header to the subject, to make it easier to sort/find
             # in email client
-            subject = "[Apps4Ed Contact] {}".format(subject)
+            subject = "[Apps4Ed Contact] {}".format(form.cleaned_data["subject"])
             
             # add the sender's name and current time to the body
             # of the email
@@ -31,19 +33,20 @@ def contact(request):
             message = """From: {}
 Time Received: {}
 Message:
-{}""".format(form.from_name, now, form.message)
+{}""".format(form.cleaned_data["from_name"], now, form.cleaned_data["message"])
             
             #try to send it
             try:
-                send_mail(subject, message, form.from_email, [admin_email])
+                pass
+                #~ send_mail(subject, message, form.cleaned_data["from_email"], [admin_email])
             except BadHeaderError:
                 return HttpResponse('Invalid header found.')
 
             messages.add_message(request, messages.INFO, "Thank you for contacting us!")
             return HttpResponseRedirect('/')
 
-        else:
-            form = ContactForm()
+    else:
+        form = ContactForm()
 
     return render(request, 'contact.html', {'form': form,})
 
