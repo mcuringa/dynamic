@@ -6,7 +6,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('Apps4Ed Admin', 'apps4ed.contact@gmail.com'),
 )
 
 MANAGERS = ADMINS
@@ -156,3 +156,14 @@ LOGGING = {
         },
     }
 }
+
+
+# Settings to Send Email via Gmail
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'apps4ed.contact@gmail.com' # enter your own email here
+EMAIL_HOST_PASSWORD = '' #enter your own password here
+EMAIL_PORT = 587
+
+
+

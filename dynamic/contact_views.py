@@ -15,14 +15,12 @@ from datetime import datetime
 
 def contact(request):
     
-    admin_email = "matt@curinga.com"
+    admin_email = "mcuringa@adelphi.edu"
 
     if request.method == 'POST': # If the form has been submitted...
         form = ContactForm(request.POST) # A form bound to the POST data
         if form.is_valid(): # All validation rules pass
-        
-            #~ print(dir(form))
-            
+
             # add a header to the subject, to make it easier to sort/find
             # in email client
             subject = "[Apps4Ed Contact] {}".format(form.cleaned_data["subject"])
@@ -32,13 +30,13 @@ def contact(request):
             now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             message = """From: {}
 Time Received: {}
+Phone: {}
 Message:
-{}""".format(form.cleaned_data["from_name"], now, form.cleaned_data["message"])
+{}""".format(form.cleaned_data["from_name"], now, form.cleaned_data["phone"], form.cleaned_data["message"])
             
             #try to send it
             try:
-                pass
-                #~ send_mail(subject, message, form.cleaned_data["from_email"], [admin_email])
+                send_mail(subject, message, form.cleaned_data["from_email"], [admin_email])
             except BadHeaderError:
                 return HttpResponse('Invalid header found.')
 
