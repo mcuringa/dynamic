@@ -25,7 +25,7 @@ urlpatterns = patterns('',
     url(r'^login-sorry$', user_views.login_error),
     url(r'^register$', user_views.register),
 
-    #--------------------------------------------- user login
+    #--------------------------------------------- contact
     url(r'^contact$', contact_views.contact),
 
 )
